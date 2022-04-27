@@ -18,9 +18,10 @@ def criar_dict(index, value):
 ##--------------------------------------------------------------------------------------------##
 # Reading file with pandas
 df_Base = pd.read_csv('Input\Dados_Abril_2022.csv', sep = ';', encoding = 'UTF-16')
+df_Tarifas = pd.read_csv('Input\Consumo_Tarifa_Por_Regiao.csv', sep = ';', encoding = 'UTF-8')
 print('\nA base de dados foi importada com sucesso.')
 
-##--------------------------------------------------------------------------------------------##
+##--df_Base-----------------------------------------------------------------------------------##
 # Removing unnecessary columns
 df_Base.drop(columns = ['DatGeracaoConjuntoDados', 'AnmPeriodoReferencia', 'NumCNPJDistribuidora',
     'CodCEP', 'NumCPFCNPJ', 'NomeTitularEmpreendimento', 'SigModalidadeEmpreendimento', 'codRegiao'], inplace = True)
@@ -84,6 +85,30 @@ df_Base['Tipo_Consumidor'] = df_Base['Tipo_Consumidor'].map({
 df_Base = df_Base.sort_values(by= ['Sigla', 'UF', 'Data_Conexao'])
 df_Base.index = range(df_Base.shape[0])
 
+##--df_Tarifas--------------------------------------------------------------------------------##
+# Renaming Columns
+df_Tarifas.columns = ['Regiao', 'Consumo_MWh', 'Receita_R$',  'Receita_Tributada_R$', 
+'Total_UC', 'Tarifa_Media_R$', 'Tarifa_Tributada_R$', 'Mes_Ano', 'Ano']
+
+# Changing column types to float
+for i in df_Tarifas:
+    if df_Tarifas[i].dtypes == 'object' and i != 'Regiao':
+        df_Tarifas[i] = df_Tarifas[i].str.replace(',' , '.')
+        df_Tarifas[i] = pd.to_numeric(df_Tarifas[i], downcast="float")
+
+# Creating a column for the reference date
+df_Tarifas['Data_Referencia'] = ''
+for i in range(len(df_Tarifas)):
+    df_Tarifas['Data_Referencia'][i] = df_Tarifas['Ano'].astype(str)[i] + '-' + df_Tarifas['Mes_Ano'].astype(str)[i][4:]
+df_Tarifas['Data_Referencia'] = pd.to_datetime(df_Tarifas['Data_Referencia'], format='%Y/%m')
+df_Tarifas.drop(columns = ['Receita_R$', 'Receita_Tributada_R$', 'Mes_Ano', 'Ano'], inplace = True)
+
+# Changing units from BRL/MWh to BRL/kWh
+df_Tarifas['Tarifa_Media_R$'] = (df_Tarifas['Tarifa_Media_R$']/1000).round(2)
+df_Tarifas['Tarifa_Tributada_R$'] = (df_Tarifas['Tarifa_Tributada_R$']/1000).round(2)
+
+##--------------------------------------------------------------------------------------------##
 # Exporting DataFrames in .csv
 df_Base.to_csv('Output/DataFrame_Base.csv', sep = ';', encoding = 'UTF-8', index = False)
+df_Tarifas.to_csv('Output/DataFrame_Tarifas.csv', sep = ';', encoding = 'UTF-8', index = False)
 print('\nOs DataFrames foram importados com sucesso.\n')
