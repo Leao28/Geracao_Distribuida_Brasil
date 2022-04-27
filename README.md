@@ -15,11 +15,13 @@ A visualização dos dados é apresentada em uma Dashboard em Power BI.
 
 ## :blue_book: Descrição do projeto
 
-1. **Manipulando_Dados.py**: Script em python que lê o conjunto de dados, exclui os dados excedentes, corrige os dados ausentes, corrige os tipos de variáveis e reorganiza o conjunto para dar andamento ao projeto.
+1. **Manipulando_Dados.py**: Script em python que lê os conjunto de dados, exclui os dados excedentes, corrige os dados ausentes, corrige os tipos de variáveis e reorganiza o conjunto para dar andamento ao projeto.
+2. **Criando_DataFrames.py**: Script em python para definir novos DataFrames com base na filtros, operações e cruzamentos entre os conjuntos de dados anteriormente manipulados.
 
 ## :page_facing_up: Base de dados
 
 * Base 1: [empreendimento-geracao-distribuida.csv](https://dadosabertos.aneel.gov.br/)
+* Base 1: [custo_e_tarifas_por_regiao.csv](https://dadosabertos.aneel.gov.br/)
 
 ## Autores
 | [<img src="https://avatars.githubusercontent.com/Leao28" width=115><br><sub>Henrique Leão</sub>](https://github.com/Leao28) |
