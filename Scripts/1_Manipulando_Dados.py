@@ -49,7 +49,7 @@ df_Base.fillna({'Concessionaria': 'Não Informado', 'Sigla': 'Não Informado',
 dict_UF = criar_dict('UF', 'ID_UF')
 for i in range(len(df_Base)):
     df_Base.ID_UF[i] = df_Base.UF[i]
-df_Base.fillna({'UF': 'Não Informado', 'ID_UF': 0.0, 'ID_Municipio': 0.0}, inplace = True)
+df_Base.fillna({'UF': 'N/I', 'ID_UF': 0.0, 'ID_Municipio': 0.0}, inplace = True)
 df_Base.replace({'ID_UF': dict_UF['ID_UF']}, inplace = True)
 
 # Column 'Pot_Instalada_kW' from string to float
